@@ -1,0 +1,10 @@
+var express = require('express')
+var router=express.Router()
+const materiasController=require('../controllers/materiasController')
+router.get('/materias',materiasController.list)
+router.get('/materias/add',materiasController.add)
+router.post('/materias/create',materiasController.create)
+router.get('/materias/detail/:id',materiasController.detail)
+router.put('/materias/update/:id',materiasController.update)
+router.put('/materias/delete/:id',materiasController.destroy)
+module.exports=router

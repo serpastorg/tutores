@@ -1,0 +1,21 @@
+const express = require('express')
+const path=require('path')
+const methodOverride = require('method-override')
+const app= express()
+const indexRouter=require('./routes/index')
+const estudianteRouter=require('./routes/estudiantesRouter')
+const profesoresRouter=require('./routes/profesoresRouter')
+const materiasRouter=require('./routes/materiasRouter')
+
+app.set('views',path.join(__dirname,'views'))
+app.set('view engine','ejs')
+
+app.use(express.static(path.resolve(__dirname,'../public')))
+app.use(express.urlencoded({extended: false}))
+app.use(methodOverride('_method'))
+
+app.use('/',indexRouter)
+app.use(estudianteRouter)
+app.use(materiasRouter)
+app.use(profesoresRouter)
+app.listen(1337,()=>console.log('Servidor corriendo en el puerto 1337'))
