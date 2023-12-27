@@ -7,14 +7,19 @@ module.exports=(sequelize,DataTypes)=>{
             allowNull:false,
             autoIncrement:true
         },
-        HoraInicioDisponible:{
+        HoraInicioDisponibleAbsoluto:{
             type:DataTypes.DATE,
-            allowNull:false
+        },
+        HoraFinDisponibleAbsoluto:{
+            type:DataTypes.DATE,
+        },
+        HoraInicioDisponible:{
+            type:DataTypes.BIGINT
         },
         HoraFinDisponible:{
-            type:DataTypes.DATE,
-            allowNull:false
-        },
+            type:DataTypes.BIGINT
+        }
+
     },
     {timestamps: false})
     DispProfesores.associate=function(models){

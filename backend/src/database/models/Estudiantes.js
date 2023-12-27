@@ -7,10 +7,18 @@ module.exports=(sequelize,DataTypes)=>
             allowNull:false,
             autoIncrement: true
         },
+        Usuario:{
+            type:DataTypes.STRING,
+            allowNull:false
+        },
         Nombre:{
             type:DataTypes.STRING,
             allowNull:false
         },
+        Password:{
+            type:DataTypes.STRING,
+            allowNull:false
+        }
     },
     {
         timestamps: true,
@@ -18,9 +26,6 @@ module.exports=(sequelize,DataTypes)=>
         updatedAt: "Actualizado",
         deletedAt: false
     } 
-)/*
-Estudiante.associate=function(models){
-    Estudiante.belongsTo(models.Materias,{foreignKey:'CursoRequerido'})
-}*/
+)
 return Estudiante
 }

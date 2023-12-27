@@ -8,7 +8,15 @@ module.exports=(sequelize,DataTypes)=>
             allowNull:false,
             autoIncrement: true
         },
+        Usuario:{
+            type:DataTypes.STRING,
+            allowNull:false
+        },
         Nombre:{
+            type:DataTypes.STRING,
+            allowNull:false
+        },
+        Password:{
             type:DataTypes.STRING,
             allowNull:false
         }

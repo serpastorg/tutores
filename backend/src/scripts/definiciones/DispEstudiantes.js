@@ -1,5 +1,5 @@
 module.exports=(sequelize,DataTypes)=>{
-    const DispProfesores=sequelize.define('DispProfesores',
+    const DispEstudiantes=sequelize.define('DispEstudiantes',
     {
         id:{
             type: DataTypes.BIGINT,
@@ -7,15 +7,19 @@ module.exports=(sequelize,DataTypes)=>{
             allowNull:false,
             autoIncrement:true
         },
-        HoraInicioDisponible:{
+        HoraInicioDisponibleAbsoluto:{
             type:DataTypes.DATE,
-            allowNull:false
+        },
+        HoraFinDisponibleAbsoluto:{
+            type:DataTypes.DATE,
+        },
+        HoraInicioDisponible:{
+            type:DataTypes.BIGINT
         },
         HoraFinDisponible:{
-            type:DataTypes.DATE,
-            allowNull:false
-        },
+            type:DataTypes.BIGINT
+        }
     },
     {timestamps: false})
-    return DispProfesores
+    return DispEstudiantes
 }

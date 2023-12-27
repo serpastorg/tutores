@@ -1,67 +1,99 @@
 const db=require('../database/models')
 const Estudiante=db.Estudiantes
-const DispEstudiantes=db.DispEstudiantes
-const Materias=db.Materias
+const bcrypt=require('bcrypt')
+const saltrounds=9
 const EstudianteController={
-    list(req,res){
-        Estudiante.findAll({raw:true})
+    async login(req,res){
+        const {username}=req.query
+        const {Password}=req.body
+        await Estudiante.findOne({where:{Usuario:username},raw:true})
+        .then((dato)=>{
+            var hash=dato.Password
+            bcrypt.compare(Password,hash,function(err,result){
+                if(err) throw err
+                if(result){
+                    res.status(200).send('Acceso garantizado')
+                }
+                else{
+                    res.status(400).send('Acceso denegado')
+                }
+            })
+        })
+        .catch(()=>{res.status(400).send('Usuario no existente.')})
+    },
+    async list(req,res){
+        await Estudiante.findAll({raw:true})
         .then((lista)=>{
             res.status(200)
-            res.render('lista.ejs',{lista,ruta:'estudiantes',letrero:'estudiante'})
+            res.send(lista)
         })               
     },
-    add(req,res){
-        Estudiante.findOne({raw:true})
+    async create(req,res){
+        var disp=false
+        const Estud=req.body
+        await Estudiante.findAll({where:{Usuario:Estud.Usuario}, raw:true})
         .then((dato)=>{
-            res.render('add.ejs',{dato,ruta:'estudiantes',letrero:'estudiante'})
+            const length=Object.keys(dato).length
+            if(length>0){
+            res.status(400).send('Usuario no disponible')
+            }
+            else {disp=true}
         })
-        .catch((error)=>res.send(error))
+        if(disp){
+        bcrypt.hash(Estud.Password,saltrounds,function(err,hash){
+            if(err) throw err
+            else{
+            Estudiante.create({
+                Usuario:Estud.Usuario,
+                Nombre: Estud.Nombre,
+                Password:hash
+            })
+            .then(()=>{
+                res.status(200).send('Usuario creado con éxito')
+            })
+        }
+        })}
     },
-    create(req,res){
-        Estudiante.create({
-            Nombre: req.body.Nombre,
-        })
-        .then(()=>{
-            res.status(200)
-            res.redirect('/estudiantes')
-        })
-        .catch((error)=>res.status(400).send(error))
-    },
-    detail(req,res){
-        const estId=req.params.id
-        Estudiante.findByPk(estId,
+    async detail(req,res){
+        const {username}=req.query
+        await Estudiante.findAll(
             {
+                attributes:['Usuario','Nombre'],
+                where:{Usuario:username},
                 raw:true
             })
         .then((dato)=>{
-            res.render('detail.ejs',{dato,ruta:'estudiantes',letrero:'estudiante'})
-        })        
+            if(Object.keys(dato).length>0){res.status(200).send(dato[0])}
+            else throw 'Estudiante no existente'
+        })
+        .catch((err)=>{res.status(400).send(err)})        
     },
-    update(req,res){
-        const estId=req.params.id
-        console.log(req.body)
-        Estudiante.update({
-            Nombre: req.body.Nombre
-        },
-        {
-            where:{id:estId}
-        })
-        .then(()=>{
-            res.status(200)
-            res.redirect('/estudiantes')
-        })
-        .catch((error)=>{
-            res.status(400).send(error)
+    async update(req,res){
+        const {Nombre,Password}=req.body
+        const {username}=req.query
+        bcrypt.hash(Password,saltrounds,function(err,hash){
+            if(err) throw err
+            else{
+                Estudiante.update({
+                    Nombre:Nombre,
+                    Password:hash
+                },
+                {
+                    where:
+                    {
+                        Usuario:username
+                    }
+                })
+                .then(()=>res.status(200).send('Éxito al actualizar'))
+            }
         })
     },
-    destroy(req,res){
-        const estId=req.params.id
-        Estudiante.destroy({where:{id:estId}})
+    async delete(req,res){
+        const {username}=req.query
+        await Estudiante.destroy({where:{Usuario:username}})
         .then(()=>{
-            res.status(200)
-            res.redirect('/estudiantes')
+            res.status(200).send('Registro eliminado con éxito')
         })
-        .catch((error)=>{res.status(400).send(error)})
     }
 }
 module.exports = EstudianteController
