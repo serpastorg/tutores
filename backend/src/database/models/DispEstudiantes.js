@@ -12,13 +12,13 @@ module.exports=(sequelize,DataTypes)=>{
         },
         HoraFinDisponibleAbsoluto:{
             type:DataTypes.DATE,
-        },
+        },/*
         HoraInicioDisponible:{
             type:DataTypes.BIGINT
         },
         HoraFinDisponible:{
             type:DataTypes.BIGINT
-        }
+        }*/
     },
     {timestamps: false})
     DispEstudiantes.associate=function(models){

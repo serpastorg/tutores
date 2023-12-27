@@ -38,7 +38,7 @@ function dia(dias=35){
 }
 function mes(){
     var salida=[]
-        for(var i=0;i<=34;i++){
+        for(var i=0;i<=69;i++){
             salida.push(dia(i))  
         }
         return salida
@@ -69,7 +69,7 @@ module.exports = {
     async creartablas(){
         const db={}
         db.sequelize=connection
-        db.horario=require('./definiciones/Horarios')(connection,DataTypes)
+        //db.horario=require('./definiciones/Horarios')(connection,DataTypes)
         db.estudiantes=require('./definiciones/Estudiantes')(connection,DataTypes)
         db.profesores=require('./definiciones/Profesores')(connection,DataTypes)
         db.DispEst=require('./definiciones/DispEstudiantes')(connection,DataTypes)
@@ -98,8 +98,8 @@ module.exports = {
                 Materia:'Cálculo Vectorial'
             }
         ])
-        await queryInterface.bulkInsert('Horarios',convertir(mes()),{})
-        await this.adddia()
+        //await queryInterface.bulkInsert('Horarios',convertir(mes()),{})
+        //await this.adddia()
         return
     }
 }

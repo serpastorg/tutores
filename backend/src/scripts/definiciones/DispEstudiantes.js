@@ -7,18 +7,18 @@ module.exports=(sequelize,DataTypes)=>{
             allowNull:false,
             autoIncrement:true
         },
-        HoraInicioDisponibleAbsoluto:{
+        HoraInicioDisponible:{
             type:DataTypes.DATE,
         },
-        HoraFinDisponibleAbsoluto:{
+        HoraFinDisponible:{
             type:DataTypes.DATE,
-        },
+        },/*
         HoraInicioDisponible:{
             type:DataTypes.BIGINT
         },
         HoraFinDisponible:{
             type:DataTypes.BIGINT
-        }
+        }*/
     },
     {timestamps: false})
     return DispEstudiantes
